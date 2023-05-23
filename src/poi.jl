@@ -160,6 +160,9 @@ function find_poi(osm::OSMData; attract_config=builtin_attract_path)
             push!(df, (;nodeid=node, lat=lla.lat, lon=lla.lon, key, value, a.class, a.points, a.range))
         end
     end
-    df2 = DataFrame(g[findmax(g.points)[2], :] for g in groupby(df, [:nodeid, :class]))
-    return df2
+    if nrow(df) > 0
+        return DataFrame(g[findmax(g.points)[2], :] for g in groupby(df, [:nodeid, :class]))
+    else
+        return DataFrame()
+    end
 end
